@@ -33,14 +33,13 @@ jobs:
         docker tag $ECR_REPO:latest ${{ steps.login-ecr.outputs.registry }}/$ECR_REPO:latest
         docker push ${{ steps.login-ecr.outputs.registry }}/$ECR_REPO:latest
 
-    
-   - name: Setup Terraform
-     uses: hashicorp/setup-terraform@v2
-     with:
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
         terraform_version: 1.5.7
 
-   - name: Deploy using Terraform
-     run: |
+    - name: Deploy using Terraform
+      run: |
         terraform init
         terraform apply -auto-approve -var="ecr_image_url=${{ steps.login-ecr.outputs.registry }}/$ECR_REPO:latest"
       working-directory: ./terraform
